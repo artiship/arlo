@@ -1,0 +1,64 @@
+syntax = "proto3";
+import public "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "io.github.artiship.arlo.scheduler.core.rpc.api";
+option java_outer_classname = "SchedulerRpc";
+
+message RpcTask {
+    int64 id = 1;
+    int64 jobId = 2;
+    int32 state = 3;
+    string workerHost = 4;
+    int32 workerPort = 5;
+    string ossPath = 6;
+    int32 jobType = 7;
+    int32 maxRetryTimes = 8;
+    int64 retryInterval = 9;
+    int32 retryTimes = 10;
+    int64 executionTimeout = 11;
+    int64 pid = 12;
+    repeated string applicationId = 13;
+    google.protobuf.Timestamp calculationTime = 14;
+    google.protobuf.Timestamp scheduleTime = 15;
+    google.protobuf.Timestamp startTime = 16;
+    google.protobuf.Timestamp endTime = 17;
+}
+
+message RpcHeartbeat {
+    string host = 1;
+    int32 port = 2;
+    double cpuUsage = 3;
+    double memoryUsage = 4;
+    int32 maxTask = 5;
+    int32 runningTasks = 6;
+    repeated string workerGroups = 7;
+    google.protobuf.Timestamp time = 8;
+}
+
+message RpcResponse {
+    int32 code = 1;
+    string message = 2;
+    bytes data = 3;
+}
+
+message HealthCheckRequest {
+    string service = 1;
+}
+
+message HealthCheckResponse {
+    enum ServingStatus {
+        UNKNOWN = 0;
+        SERVING = 1;
+        NOT_SERVING = 2;
+    }
+    ServingStatus status = 1;
+}
+
+service SchedulerService {
+    rpc submitTask (RpcTask) returns (RpcResponse);
+    rpc killTask (RpcTask) returns (RpcResponse);
+    rpc updateTask (RpcTask) returns (RpcResponse);
+    rpc heartbeat (RpcHeartbeat) returns (RpcResponse);
+    rpc healthCheck (HealthCheckRequest) returns (HealthCheckResponse);
+}
