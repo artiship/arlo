@@ -45,7 +45,6 @@ public class CommonShellChangeHandlerListener implements IZkChildListener {
                             String syncTasksInfo = ZkUtils.getNodeData(zkClient, syncTaskPathBuilder.toString());
                             List<ZkFile> zkFiles = JSONArray.parseArray(syncTasksInfo, ZkFile.class);
                             for (ZkFile zkFile : zkFiles) {
-                                SyncCommonShellUtil.syncFile(zkFile, task, ossClientHolder);
                             }
 
                             processedSyncTasks.add(task);

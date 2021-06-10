@@ -1,6 +1,5 @@
 package io.github.artiship.arlo.scheduler.worker.util;
 
-import io.github.artiship.arlo.model.ZkFile;
 import io.github.artiship.arlo.model.enums.FileType;
 import io.github.artiship.arlo.scheduler.worker.common.Constants;
 import lombok.extern.slf4j.Slf4j;
@@ -51,22 +50,6 @@ public class SyncCommonShellUtil {
         if (ossKey == null) return true;
         if (ossKey.indexOf(".") == -1) return true;
         return false;
-    }
-
-
-    public static void syncFile(ZkFile zkFile, String taskTag, OSSClientHolder ossClientHolder) {
-        FileActionType actionType = zkFile.getFileActionType();
-        switch (actionType) {
-            case CREATE:
-                create(ossClientHolder, zkFile.getFilePath(), zkFile.getFileName(), zkFile.getFileType(), taskTag);
-                break;
-            case UPDATE:
-                update(ossClientHolder, zkFile.getFilePath(), zkFile.getFileName(), zkFile.getFileType(), taskTag);
-                break;
-            case DELETE:
-                delete(zkFile.getFileType(), zkFile.getFileName(), taskTag);
-                break;
-        }
     }
 
 

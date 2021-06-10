@@ -1,5 +1,6 @@
 package io.github.artiship.arlo.model.vo;
 
+import io.github.artiship.arlo.model.entity.SchedulerJobRelation;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

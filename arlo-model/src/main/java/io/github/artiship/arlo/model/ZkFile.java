@@ -1,6 +1,7 @@
 package io.github.artiship.arlo.model;
 
 import com.google.gson.Gson;
+import io.github.artiship.arlo.model.enums.FileActionType;
 import io.github.artiship.arlo.model.enums.FileType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
