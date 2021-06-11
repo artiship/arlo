@@ -4,6 +4,7 @@ import io.github.artiship.arlo.db.repository.SchedulerJobRelationRepository;
 import io.github.artiship.arlo.db.repository.SchedulerJobRepository;
 import io.github.artiship.arlo.db.repository.SchedulerTaskRepository;
 import io.github.artiship.arlo.model.entity.SchedulerJob;
+import io.github.artiship.arlo.model.entity.SchedulerJobRelation;
 import io.github.artiship.arlo.model.entity.SchedulerTask;
 import io.github.artiship.arlo.model.vo.JobRelation;
 import io.github.artiship.arlo.scheduler.AbstractTest;
