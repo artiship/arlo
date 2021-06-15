@@ -1,5 +1,8 @@
 package io.github.artiship.arlo.scheduler.model.dependency;
 
+import lombok.Getter;
+
+@Getter
 public enum DependencyRuleType {
     ALL("*"),
     ANY("A"),
@@ -21,4 +24,6 @@ public enum DependencyRuleType {
         }
         throw new IllegalArgumentException("unsupported dependency rule type symbol " + typeSymbol);
     }
+
+
 }

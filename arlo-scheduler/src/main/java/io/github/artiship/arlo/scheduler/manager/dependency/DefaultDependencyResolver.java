@@ -28,13 +28,13 @@ import static org.quartz.TriggerUtils.computeFireTimesBetween;
 
 @Slf4j
 @Getter
-public class DependencyBuilder {
+public class DefaultDependencyResolver implements DependencyResolver {
     private final String parentCronExpression;
     private final String childCronExpression;
     private final LocalDateTime childScheduleTime;
     private final boolean isParentSelfDepend;
 
-    private DependencyBuilder(Builder builder) {
+    private DefaultDependencyResolver(Builder builder) {
         this.parentCronExpression = builder.getParentCronExpression();
         this.childCronExpression = builder.getChildCronExpression();
         this.childScheduleTime = builder.getChildScheduleTime();
@@ -45,6 +45,7 @@ public class DependencyBuilder {
         return new Builder();
     }
 
+    @Override
     public List<LocalDateTime> parentScheduleTimes() {
         requireNonNull(parentCronExpression, "Parent cron expression is null.");
         requireNonNull(childCronExpression, "Child cron expression is null.");
@@ -207,8 +208,8 @@ public class DependencyBuilder {
             return this;
         }
 
-        public DependencyBuilder build() {
-            return new DependencyBuilder(this);
+        public DefaultDependencyResolver build() {
+            return new DefaultDependencyResolver(this);
         }
     }
 }

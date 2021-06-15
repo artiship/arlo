@@ -40,6 +40,9 @@ public class SchedulerJob {
     private String scheduleCron;
     private Long offsetMs;
     private Boolean isSelfDependent;
+    private Integer dependencyType;
+    private String dependencyRange;
+    private String dependencyRule;
     private Integer maxRetryTimes;
     private Long retryInterval;
     private Long executionTimeout;
@@ -72,6 +75,9 @@ public class SchedulerJob {
                 .setStartTime(parse(jobSchedule.getString("startTime"), ofPattern(DATE_TIME_FORMAT)))
                 .setScheduleCron(jobSchedule.getString("scheduleCron"))
                 .setIsSelfDependent(jobSchedule.getBoolean("isSelfDependent") == null ? false : jobSchedule.getBoolean("isSelfDependent"))
+                .setDependencyType(jobSchedule.getInteger("dependencyType"))
+                .setDependencyRange(jobSchedule.getString("dependencyRange"))
+                .setDependencyRule(jobSchedule.getString("dependencyRule"))
                 .setRefreshSubJob(jobSchedule.getBoolean("refreshSubJob") == null ? false : jobSchedule.getBoolean("refreshSubJob"))
                 .setIsPrivate(jobBasic.getInteger("isPrivate") == null ? 0 : jobBasic.getInteger("isPrivate"))
                 .setMaxRetryTimes(jobSchedule.getInteger("retry"))

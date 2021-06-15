@@ -11,6 +11,9 @@ import io.github.artiship.arlo.model.enums.TaskState;
 import io.github.artiship.arlo.model.enums.TaskTriggerType;
 import io.github.artiship.arlo.model.exception.ArloRuntimeException;
 import io.github.artiship.arlo.scheduler.core.rpc.api.RpcTask;
+import io.github.artiship.arlo.scheduler.model.dependency.DependencyRange;
+import io.github.artiship.arlo.scheduler.model.dependency.DependencyRule;
+import io.github.artiship.arlo.scheduler.model.dependency.DependencyType;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -60,6 +63,9 @@ public class SchedulerTaskBo implements Comparable<SchedulerTaskBo> {
     private JobPriority jobPriority;
     private JobType jobType;
     private Boolean isSelfDependent;
+    private DependencyType dependencyType;
+    private DependencyRule dependencyRule;
+    private DependencyRange dependencyRange;
     private String scheduleCron;
     private Long offsetMs;
     private String sourceHost;
@@ -93,6 +99,9 @@ public class SchedulerTaskBo implements Comparable<SchedulerTaskBo> {
                                     .setSourceHost(schedulerJobBo.getSourceHost())
                                     .setJobType(schedulerJobBo.getJobType())
                                     .setIsSelfDependent(schedulerJobBo.getIsSelfDependent())
+                                    .setDependencyType(schedulerJobBo.getDependencyType())
+                                    .setDependencyRange(schedulerJobBo.getDependencyRange())
+                                    .setDependencyRule(schedulerJobBo.getDependencyRule())
                                     .setScheduleCron(schedulerJobBo.getScheduleCron())
                                     .setOffsetMs(schedulerJobBo.getOffsetMs());
     }
@@ -154,6 +163,9 @@ public class SchedulerTaskBo implements Comparable<SchedulerTaskBo> {
                                             : TaskTriggerType.of(schedulerTask.getTaskTriggerType()))
                                     .setIsSelfDependent(schedulerTask.getIsSelfDependent() == null ? null
                                             : toBoolean(schedulerTask.getIsSelfDependent()))
+                                    .setDependencyRule(DependencyRule.of(schedulerTask.getDependencyRule()))
+                                    .setDependencyRange(DependencyRange.of(schedulerTask.getDependencyRange()))
+                                    .setDependencyType(DependencyType.of(schedulerTask.getDependencyType()))
                                     .setScheduleCron(schedulerTask.getScheduleCron())
                                     .setOffsetMs(schedulerTask.getOffsetMs())
                                     .setSourceHost(schedulerTask.getSourceHost())
@@ -209,6 +221,9 @@ public class SchedulerTaskBo implements Comparable<SchedulerTaskBo> {
                                   .setJobPriority(this.jobPriority == null ? null : this.jobPriority.getPriority())
                                   .setJobType(this.getJobTypeCode())
                                   .setIsSelfDependent(getIsSelfDependentValue())
+                                  .setDependencyType(this.dependencyType.getCode())
+                                  .setDependencyRule(this.dependencyRule.toString())
+                                  .setDependencyRange(this.dependencyRange.toString())
                                   .setScheduleCron(this.getScheduleCron())
                                   .setOffsetMs(this.getOffsetMs())
                                   .setParallelism(this.getParallelism())
@@ -269,6 +284,9 @@ public class SchedulerTaskBo implements Comparable<SchedulerTaskBo> {
                                     .setJobType(this.jobType)
                                     .setDagId(this.dagId)
                                     .setIsSelfDependent(this.isSelfDependent)
+                                    .setDependencyType(this.dependencyType)
+                                    .setDependencyRule(this.dependencyRule)
+                                    .setDependencyRange(this.dependencyRange)
                                     .setScheduleCron(this.scheduleCron)
                                     .setOffsetMs(this.offsetMs)
                                     .setParallelism(this.parallelism)
@@ -300,6 +318,9 @@ public class SchedulerTaskBo implements Comparable<SchedulerTaskBo> {
                                     .setJobPriority(this.jobPriority)
                                     .setJobType(this.jobType)
                                     .setIsSelfDependent(this.isSelfDependent)
+                                    .setDependencyType(this.dependencyType)
+                                    .setDependencyRange(this.dependencyRange)
+                                    .setDependencyRule(this.dependencyRule)
                                     .setScheduleCron(this.scheduleCron)
                                     .setOffsetMs(this.offsetMs)
                                     .setSourceHost(this.sourceHost)

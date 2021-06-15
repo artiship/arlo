@@ -1,7 +1,7 @@
 package io.github.artiship.arlo.scheduler.manager;
 
 import io.github.artiship.arlo.scheduler.manager.collections.LimitedSortedByValueMap;
-import io.github.artiship.arlo.scheduler.manager.dependency.DependencyBuilder;
+import io.github.artiship.arlo.scheduler.manager.dependency.DefaultDependencyResolver;
 import io.github.artiship.arlo.scheduler.model.TaskSuccessRecord;
 import org.junit.Test;
 
@@ -72,7 +72,7 @@ public class LimitedSortedMapTest {
         String c = "2 */5 * * * ?";
 
         LocalDateTime childScheduleTime = localDateTime("2019-12-26 20:35:02");
-        DependencyBuilder build = DependencyBuilder.builder()
+        DefaultDependencyResolver build = DefaultDependencyResolver.builder()
                                                    .parentCronExpression(p)
                                                    .childCronExpression(c)
                                                    .childScheduleTime(childScheduleTime)
@@ -88,7 +88,7 @@ public class LimitedSortedMapTest {
         String c = "00 */5 00-23 * * ?";
 
         LocalDateTime childScheduleTime = localDateTime("2019-12-26 20:35:00");
-        DependencyBuilder build = DependencyBuilder.builder()
+        DefaultDependencyResolver build = DefaultDependencyResolver.builder()
                                                    .parentCronExpression(p)
                                                    .childCronExpression(c)
                                                    .childScheduleTime(childScheduleTime)
@@ -105,7 +105,7 @@ public class LimitedSortedMapTest {
 
         LocalDateTime childScheduleTime = localDateTime("2019-12-11 00:02:00");
 
-        DependencyBuilder build = DependencyBuilder.builder()
+        DefaultDependencyResolver build = DefaultDependencyResolver.builder()
                                                    .parentCronExpression(parentCron)
                                                    .childCronExpression(childCron)
                                                    .childScheduleTime(childScheduleTime)

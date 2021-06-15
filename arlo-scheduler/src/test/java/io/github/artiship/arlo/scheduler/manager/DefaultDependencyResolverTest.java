@@ -1,6 +1,6 @@
 package io.github.artiship.arlo.scheduler.manager;
 
-import io.github.artiship.arlo.scheduler.manager.dependency.DependencyBuilder;
+import io.github.artiship.arlo.scheduler.manager.dependency.DefaultDependencyResolver;
 import io.github.artiship.arlo.utils.CronUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.google.common.base.Joiner.on;
-import static io.github.artiship.arlo.scheduler.manager.dependency.DependencyBuilder.builder;
+import static io.github.artiship.arlo.scheduler.manager.dependency.DefaultDependencyResolver.builder;
 import static io.github.artiship.arlo.utils.Dates.localDateTime;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
-public class DependencyBuilderTest {
+public class DefaultDependencyResolverTest {
 
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -27,7 +27,7 @@ public class DependencyBuilderTest {
         String parentCron = "0 0 3,4,5,6,7 12,13 * ?";
 
 
-        DependencyBuilder builder = DependencyBuilder.builder()
+        DefaultDependencyResolver builder = DefaultDependencyResolver.builder()
                                                      .childCronExpression(childCron)
                                                      .parentCronExpression(parentCron)
                                                      .childScheduleTime(parse("2020-09-08 04:00:00"))
@@ -42,7 +42,7 @@ public class DependencyBuilderTest {
         String parentCron = "00 0 6 ? * 2";
         String childCron = "00 0 6 ? * 2";
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(parse("2020-09-07 06:00:00"))
                                              .build();
@@ -57,7 +57,7 @@ public class DependencyBuilderTest {
         String parentCron = "00 18 00 ? * 2";
         String childCron = "00 12 08 * * ?";
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(parse("2020-08-25 08:12:00"))
                                              .build();
@@ -73,7 +73,7 @@ public class DependencyBuilderTest {
 
         String childCron = "00 16 00-23/1 * * ?";
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(parse("2020-03-26 09:16:00"))
                                              .build();
@@ -93,14 +93,14 @@ public class DependencyBuilderTest {
         String parentCron = "00 0 4,9,14 * * ?";
         String childCron = "00 0 4,9,14 * * ?";
 
-        DependencyBuilder checker1 = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker1 = builder().parentCronExpression(parentCron)
                                               .childCronExpression(childCron)
                                               .childScheduleTime(parse("2020-03-26 09:00:00"))
                                               .build();
 
         assertThat(checker1.parentScheduleTimes()).isEqualTo(asList(parse("2020-03-26 09:00:00")));
 
-        DependencyBuilder checker2 = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker2 = builder().parentCronExpression(parentCron)
                                               .childCronExpression(childCron)
                                               .childScheduleTime(parse("2020-03-26 14:00:00"))
                                               .build();
@@ -113,7 +113,7 @@ public class DependencyBuilderTest {
         String parentCron = "00 */10 * * * ?";
         String childCron = "00 1/10 * * * ?";
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(parse("2020-03-23 15:01:00"))
                                              .build();
@@ -126,7 +126,7 @@ public class DependencyBuilderTest {
         String parentCron = "00 00 0/2 * * ?";
         String childCron = "00 00 1/2 * * ?";
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(parse("2020-03-23 03:00:00"))
                                              .build();
@@ -140,7 +140,7 @@ public class DependencyBuilderTest {
         String parentCron = "01 */5 13-23 * * ?";
         String childCron = "00 */5 13-23 * * ?";
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(parse("2019-12-11 13:00:00"))
                                              .build();
@@ -153,7 +153,7 @@ public class DependencyBuilderTest {
         String parentCron = "00 */5 13-23 * * ?";
         String childCron = "02 */5 13-23 * * ?";
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(parse("2019-12-11 13:00:02"))
                                              .build();
@@ -166,7 +166,7 @@ public class DependencyBuilderTest {
         String parentCron = "00 */5 13-23 * * ?";
         String childCron = "00 */5 13-23 * * ?";
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(parse("2019-12-11 13:00:00"))
                                              .build();
@@ -182,7 +182,7 @@ public class DependencyBuilderTest {
 
         LocalDateTime parentScheduleTime = parse("2019-12-11 03:02:00");
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(parse("2019-12-11 00:00:00"))
                                              .build();
@@ -198,7 +198,7 @@ public class DependencyBuilderTest {
         LocalDateTime childScheduleTime = parse("2019-12-11 03:02:00");
         LocalDateTime parentScheduleTime = parse("2019-12-11 00:00:00");
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(childScheduleTime)
                                              .build();
@@ -214,7 +214,7 @@ public class DependencyBuilderTest {
         LocalDateTime childScheduleTime = parse("2019-12-11 03:02:00");
         LocalDateTime parentScheduleTime = parse("2019-12-11 03:02:00");
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(childScheduleTime)
                                              .build();
@@ -230,7 +230,7 @@ public class DependencyBuilderTest {
         LocalDateTime childScheduleTime = parse("2019-12-11 00:00:00");
         LocalDateTime parentScheduleTime = parse("2019-12-11 03:02:00");
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(childScheduleTime)
                                              .build();
@@ -246,7 +246,7 @@ public class DependencyBuilderTest {
         LocalDateTime childScheduleTime = parse("2019-12-11 00:02:00");
         LocalDateTime parentScheduleTime = parse("2019-12-11 00:00:00");
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(childScheduleTime)
                                              .build();
@@ -262,7 +262,7 @@ public class DependencyBuilderTest {
         LocalDateTime childScheduleTime = parse("2019-12-11 00:02:00");
         LocalDateTime parentScheduleTime = parse("2019-12-11 00:02:00");
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(childScheduleTime)
                                              .build();
@@ -277,7 +277,7 @@ public class DependencyBuilderTest {
 
         LocalDateTime childScheduleTime = parse("2019-12-11 03:00:01");
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(childScheduleTime)
                                              .build();
@@ -295,7 +295,7 @@ public class DependencyBuilderTest {
 
         LocalDateTime childScheduleTime = parse("2019-12-11 03:01:03");
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(childScheduleTime)
                                              .build();
@@ -311,25 +311,25 @@ public class DependencyBuilderTest {
         String parentCron = "4 1 1,13 * * ?";
         String childCron = "3 1 */1 * * ?";
 
-        DependencyBuilder.Builder builder = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver.Builder builder = builder().parentCronExpression(parentCron)
                                                      .childCronExpression(childCron);
 
-        DependencyBuilder checker_1 = builder.childScheduleTime(parse("2019-12-11 01:01:03"))
+        DefaultDependencyResolver checker_1 = builder.childScheduleTime(parse("2019-12-11 01:01:03"))
                                              .build();
 
         assertThat(checker_1.parentScheduleTimes()).isEqualTo(asList(parse("2019-12-11 01:01:04")));
 
-        DependencyBuilder checker_2 = builder.childScheduleTime(parse("2019-12-11 02:01:03"))
+        DefaultDependencyResolver checker_2 = builder.childScheduleTime(parse("2019-12-11 02:01:03"))
                                              .build();
 
         assertThat(checker_2.parentScheduleTimes()).isEqualTo(asList(parse("2019-12-11 01:01:04")));
 
-        DependencyBuilder checker_3 = builder.childScheduleTime(parse("2019-12-11 12:01:03"))
+        DefaultDependencyResolver checker_3 = builder.childScheduleTime(parse("2019-12-11 12:01:03"))
                                              .build();
 
         assertThat(checker_3.parentScheduleTimes()).isEqualTo(asList(parse("2019-12-11 01:01:04")));
 
-        DependencyBuilder checker_4 = builder.childScheduleTime(parse("2019-12-11 13:01:03"))
+        DefaultDependencyResolver checker_4 = builder.childScheduleTime(parse("2019-12-11 13:01:03"))
                                              .build();
 
         assertThat(checker_4.parentScheduleTimes()).isEqualTo(asList(parse("2019-12-11 13:01:04")));
@@ -340,17 +340,17 @@ public class DependencyBuilderTest {
         String parentCron = "00 00 01-02/1 * * ?";
         String childCron = "00 00 03-04/1 * * ?";
 
-        DependencyBuilder.Builder builder = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver.Builder builder = builder().parentCronExpression(parentCron)
                                                      .childCronExpression(childCron);
 
-        DependencyBuilder checker_1 = builder.childScheduleTime(parse("2019-12-11 03:00:00"))
+        DefaultDependencyResolver checker_1 = builder.childScheduleTime(parse("2019-12-11 03:00:00"))
                                              .build();
 
         List<LocalDateTime> expect = asList(parse("2019-12-11 02:00:00"));
 
         assertThat(checker_1.parentScheduleTimes()).isEqualTo(expect);
 
-        DependencyBuilder checker_2 = builder.childScheduleTime(parse("2019-12-11 04:00:00"))
+        DefaultDependencyResolver checker_2 = builder.childScheduleTime(parse("2019-12-11 04:00:00"))
                                              .build();
 
         assertThat(checker_2.parentScheduleTimes()).isEqualTo(expect);
@@ -361,7 +361,7 @@ public class DependencyBuilderTest {
         String parentCron = "00 */5 20-20 * * ?";
         String childCron = "00 */5 01-02 * * ?";
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(parse("2019-12-11 01:05:00"))
                                              .build();
@@ -376,7 +376,7 @@ public class DependencyBuilderTest {
         String parentCron = "00 */5 20-20 * * ?";
         String childCron = "00 */10 01-02 * * ?";
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(parse("2019-12-11 01:10:00"))
                                              .build();
@@ -391,7 +391,7 @@ public class DependencyBuilderTest {
         String parentCron = "00 */5 01-02 * * ?";
         String childCron = "00 */10 20-20 * * ?";
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(parse("2019-12-11 20:00:00"))
                                              .build();
@@ -406,7 +406,7 @@ public class DependencyBuilderTest {
         String parentCron = "00 */10 20-20 * * ?";
         String childCron = "00 */5 01-02 * * ?";
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(parse("2019-12-11 01:05:00"))
                                              .build();
@@ -421,7 +421,7 @@ public class DependencyBuilderTest {
         String parentCron = "00 00 01-02/1 * * ?";
         String childCron = "00 00 04-05/1 * * ?";
 
-        DependencyBuilder checker_1 = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker_1 = builder().parentCronExpression(parentCron)
                                                .childCronExpression(childCron)
                                                .childScheduleTime(parse("2019-12-11 04:00:00"))
                                                .build();
@@ -432,7 +432,7 @@ public class DependencyBuilderTest {
 
         assertThat(checker_1.parentScheduleTimes()).isEqualTo(expect_1);
 
-        DependencyBuilder checker_2 = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker_2 = builder().parentCronExpression(parentCron)
                                                .childCronExpression(childCron)
                                                .childScheduleTime(parse("2019-12-11 05:00:00"))
                                                .build();
@@ -451,7 +451,7 @@ public class DependencyBuilderTest {
 
         LocalDateTime childScheduleTime = parse("2019-12-11 00:02:00");
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(childScheduleTime)
                                              .build();
@@ -492,7 +492,7 @@ public class DependencyBuilderTest {
 
         LocalDateTime childScheduleTime = parse("2019-12-11 00:02:00");
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(childScheduleTime)
                                              .build();
@@ -510,7 +510,7 @@ public class DependencyBuilderTest {
 
         LocalDateTime childScheduleTime = parse("2019-12-11 00:03:00");
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(childScheduleTime)
                                              .build();
@@ -529,7 +529,7 @@ public class DependencyBuilderTest {
         String parentCron = "00 30 09 10 * ?";
         String childCron = "00 */5 00-00 * * ?";
 
-        DependencyBuilder checker = builder().parentCronExpression(parentCron)
+        DefaultDependencyResolver checker = builder().parentCronExpression(parentCron)
                                              .childCronExpression(childCron)
                                              .childScheduleTime(parse("2020-01-03 00:50:00"))
                                              .build();

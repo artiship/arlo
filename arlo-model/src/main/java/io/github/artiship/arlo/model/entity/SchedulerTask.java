@@ -39,6 +39,9 @@ public class SchedulerTask {
     private Integer taskTriggerType;
     private Integer jobType;
     private Integer isSelfDependent;
+    private Integer dependencyType;
+    private String dependencyRange;
+    private String dependencyRule;
     private Integer jobPriority;
     private String scheduleCron;
     private Long offsetMs;
@@ -77,6 +80,9 @@ public class SchedulerTask {
         if (schedulerTask.getTaskTriggerType() != null) this.taskTriggerType = schedulerTask.getTaskTriggerType();
         if (schedulerTask.getJobType() != null) this.jobType = schedulerTask.getJobType();
         if (schedulerTask.getIsSelfDependent() != null) this.isSelfDependent = schedulerTask.getIsSelfDependent();
+        if (schedulerTask.getDependencyType() != null) this.dependencyType = schedulerTask.getDependencyType();
+        if (schedulerTask.getDependencyRange() != null) this.dependencyRange = schedulerTask.getDependencyRange();
+        if (schedulerTask.getDependencyRule() != null) this.dependencyRule = schedulerTask.getDependencyRule();
         if (schedulerTask.getJobPriority() != null) this.jobPriority = schedulerTask.getJobPriority();
         if (schedulerTask.getScheduleCron() != null) this.scheduleCron = schedulerTask.getScheduleCron();
         if (schedulerTask.getOffsetMs() != null) this.offsetMs = schedulerTask.getOffsetMs();

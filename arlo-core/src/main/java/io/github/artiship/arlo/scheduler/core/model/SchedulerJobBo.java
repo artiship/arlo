@@ -9,6 +9,9 @@ import io.github.artiship.arlo.model.enums.JobPriority;
 import io.github.artiship.arlo.model.enums.JobReleaseState;
 import io.github.artiship.arlo.model.enums.JobType;
 import io.github.artiship.arlo.model.exception.ArloRuntimeException;
+import io.github.artiship.arlo.scheduler.model.dependency.DependencyRange;
+import io.github.artiship.arlo.scheduler.model.dependency.DependencyRule;
+import io.github.artiship.arlo.scheduler.model.dependency.DependencyType;
 import io.github.artiship.arlo.utils.CronUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -59,6 +62,9 @@ public class SchedulerJobBo implements Serializable {
     private String scheduleCron;
     private Long offsetMs;
     private Boolean isSelfDependent;
+    private DependencyType dependencyType;
+    private DependencyRange dependencyRange;
+    private DependencyRule dependencyRule;
     private JobCycle jobCycle;
     private Integer maxRetryTimes;
     private Long retryInterval;
@@ -97,6 +103,9 @@ public class SchedulerJobBo implements Serializable {
                                                   .collect(toList()))
                                    .setIsSelfDependent(schedulerJob.getIsSelfDependent() == null ? false
                                            : toBoolean(schedulerJob.getIsSelfDependent()))
+                                   .setDependencyType(DependencyType.of(schedulerJob.getDependencyType()))
+                                   .setDependencyRange(DependencyRange.of(schedulerJob.getDependencyRange()))
+                                   .setDependencyRule(DependencyRule.of(schedulerJob.getDependencyRule()))
                                    .setScheduleCron(schedulerJob.getScheduleCron())
                                    .setOffsetMs(schedulerJob.getOffsetMs())
                                    .setMaxRetryTimes(schedulerJob.getMaxRetryTimes())

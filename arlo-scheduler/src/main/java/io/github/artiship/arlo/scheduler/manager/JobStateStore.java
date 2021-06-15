@@ -9,7 +9,7 @@ import io.github.artiship.arlo.scheduler.core.model.SchedulerJobBo;
 import io.github.artiship.arlo.scheduler.core.model.SchedulerTaskBo;
 import io.github.artiship.arlo.scheduler.manager.collections.LimitedSortedByValueMap;
 import io.github.artiship.arlo.scheduler.manager.collections.LimitedSortedSet;
-import io.github.artiship.arlo.scheduler.manager.dependency.DependencyBuilder;
+import io.github.artiship.arlo.scheduler.manager.dependency.DependencyResolverFactory;
 import io.github.artiship.arlo.scheduler.model.TaskFailedRecord;
 import io.github.artiship.arlo.scheduler.model.TaskSuccessRecord;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.NavigableSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.google.common.collect.Ordering.natural;
@@ -346,17 +340,11 @@ public class JobStateStore implements Service {
 
             SchedulerJobBo parentJob = schedulerDao.getJob(parentJobId);
 
-            DependencyBuilder builder = DependencyBuilder.builder()
-                                                         .childCronExpression(task.getScheduleCron())
-                                                         .childScheduleTime(task.getScheduleTime())
-                                                         .parentCronExpression(parentJob.getScheduleCron())
-                                                         .isParentSelfDepend(parentJob.getIsSelfDependent())
-                                                         .build();
-
-            builder.parentScheduleTimes()
-                   .forEach(scheduleTime ->
-                           dependencies.add(new TaskDependency(parentJobId,
-                                   localDateTimeToStr(scheduleTime), calTimeRangeStr(scheduleTime, parentJob.getScheduleCron()))));
+            DependencyResolverFactory.create(task, parentJob)
+                                     .parentScheduleTimes()
+                                     .forEach(scheduleTime ->
+                                             dependencies.add(new TaskDependency(parentJobId,
+                                                     localDateTimeToStr(scheduleTime), calTimeRangeStr(scheduleTime, parentJob.getScheduleCron()))));
         }
 
         return dependencies;

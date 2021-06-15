@@ -29,4 +29,12 @@ public class DependencyRule {
 
         throw new IllegalArgumentException("Dependency rule expression is not supported: " + ruleExpression);
     }
+
+    @Override
+    public String toString() {
+        if (ruleType == DependencyRuleType.ALL)
+            return ruleType.getTypeSymbol();
+
+        return ruleType.getTypeSymbol() + "(" + scalar + ")";
+    }
 }
