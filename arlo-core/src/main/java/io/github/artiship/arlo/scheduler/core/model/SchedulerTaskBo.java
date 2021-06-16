@@ -4,6 +4,7 @@ import com.google.common.base.Splitter;
 import com.google.gson.Gson;
 import com.google.protobuf.ProtocolStringList;
 import io.github.artiship.arlo.model.ZkLostTask;
+import io.github.artiship.arlo.model.bo.TaskDependency;
 import io.github.artiship.arlo.model.entity.SchedulerTask;
 import io.github.artiship.arlo.model.enums.JobPriority;
 import io.github.artiship.arlo.model.enums.JobType;
@@ -29,8 +30,8 @@ import static io.github.artiship.arlo.model.enums.JobPriority.MEDIUM;
 import static io.github.artiship.arlo.model.enums.TaskState.*;
 import static io.github.artiship.arlo.model.enums.TaskTriggerType.MANUAL_RUN;
 import static io.github.artiship.arlo.utils.CronUtils.*;
-import static io.github.artiship.arlo.utils.Dates.localDateTime;
-import static io.github.artiship.arlo.utils.Dates.protoTimestamp;
+import static io.github.artiship.arlo.utils.Dates.*;
+import static io.github.artiship.arlo.utils.QuartzUtils.preScheduleTime;
 import static java.time.Duration.between;
 import static java.time.LocalDateTime.now;
 import static java.time.temporal.ChronoUnit.MILLIS;
@@ -339,6 +340,12 @@ public class SchedulerTaskBo implements Comparable<SchedulerTaskBo> {
                                     .setIsFirstOfJob(this.isFirstOfJob)
                                     .setSkipDependencies(this.skipDependencies)
                                     .setTaskDependenciesJson(this.taskDependenciesJson);
+    }
+
+    public TaskDependency selfDependency() {
+        LocalDateTime preScheduleTime = preScheduleTime(this.scheduleCron, this.scheduleTime);
+        String preCalTimeRange = calTimeRangeStr(preScheduleTime, this.scheduleCron);
+        return new TaskDependency(this.jobId, localDateTimeToStr(this.scheduleTime), preCalTimeRange);
     }
 
     private String workerGroupsToString() {

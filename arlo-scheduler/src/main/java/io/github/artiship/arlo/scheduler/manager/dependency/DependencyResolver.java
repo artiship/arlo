@@ -1,8 +1,9 @@
 package io.github.artiship.arlo.scheduler.manager.dependency;
 
-import java.time.LocalDateTime;
+import io.github.artiship.arlo.model.bo.TaskDependency;
+
 import java.util.List;
 
 public interface DependencyResolver {
-    public List<LocalDateTime> parentScheduleTimes();
+    List<TaskDependency> dependencies();
 }

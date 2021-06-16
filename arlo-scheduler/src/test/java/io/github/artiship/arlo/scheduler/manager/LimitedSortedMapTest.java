@@ -1,7 +1,7 @@
 package io.github.artiship.arlo.scheduler.manager;
 
 import io.github.artiship.arlo.scheduler.manager.collections.LimitedSortedByValueMap;
-import io.github.artiship.arlo.scheduler.manager.dependency.DefaultDependencyResolver;
+import io.github.artiship.arlo.scheduler.manager.dependency.DefaultDependencyBuilder;
 import io.github.artiship.arlo.scheduler.model.TaskSuccessRecord;
 import org.junit.Test;
 
@@ -72,11 +72,11 @@ public class LimitedSortedMapTest {
         String c = "2 */5 * * * ?";
 
         LocalDateTime childScheduleTime = localDateTime("2019-12-26 20:35:02");
-        DefaultDependencyResolver build = DefaultDependencyResolver.builder()
-                                                   .parentCronExpression(p)
-                                                   .childCronExpression(c)
-                                                   .childScheduleTime(childScheduleTime)
-                                                   .build();
+        DefaultDependencyBuilder build = DefaultDependencyBuilder.builder()
+                                                                 .parentCronExpression(p)
+                                                                 .childCronExpression(c)
+                                                                 .childScheduleTime(childScheduleTime)
+                                                                 .build();
 
         build.parentScheduleTimes()
              .forEach(i -> System.out.println(calTimeRangeStr(i, p)));
@@ -88,11 +88,11 @@ public class LimitedSortedMapTest {
         String c = "00 */5 00-23 * * ?";
 
         LocalDateTime childScheduleTime = localDateTime("2019-12-26 20:35:00");
-        DefaultDependencyResolver build = DefaultDependencyResolver.builder()
-                                                   .parentCronExpression(p)
-                                                   .childCronExpression(c)
-                                                   .childScheduleTime(childScheduleTime)
-                                                   .build();
+        DefaultDependencyBuilder build = DefaultDependencyBuilder.builder()
+                                                                 .parentCronExpression(p)
+                                                                 .childCronExpression(c)
+                                                                 .childScheduleTime(childScheduleTime)
+                                                                 .build();
 
         build.parentScheduleTimes()
              .forEach(i -> System.out.println(calTimeRangeStr(i, p)));
@@ -105,11 +105,11 @@ public class LimitedSortedMapTest {
 
         LocalDateTime childScheduleTime = localDateTime("2019-12-11 00:02:00");
 
-        DefaultDependencyResolver build = DefaultDependencyResolver.builder()
-                                                   .parentCronExpression(parentCron)
-                                                   .childCronExpression(childCron)
-                                                   .childScheduleTime(childScheduleTime)
-                                                   .build();
+        DefaultDependencyBuilder build = DefaultDependencyBuilder.builder()
+                                                                 .parentCronExpression(parentCron)
+                                                                 .childCronExpression(childCron)
+                                                                 .childScheduleTime(childScheduleTime)
+                                                                 .build();
 
         System.out.println(build.parentScheduleTimes());
     }

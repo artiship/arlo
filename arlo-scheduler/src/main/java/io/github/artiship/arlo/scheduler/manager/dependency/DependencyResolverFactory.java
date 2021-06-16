@@ -8,21 +8,10 @@ public class DependencyResolverFactory {
         DependencyResolver dependencyResolver;
         switch (task.getDependencyType()) {
             case DEFAULT:
-                dependencyResolver = DefaultDependencyResolver.builder()
-                                                              .childCronExpression(task.getScheduleCron())
-                                                              .childScheduleTime(task.getScheduleTime())
-                                                              .parentCronExpression(parentJob.getScheduleCron())
-                                                              .isParentSelfDepend(parentJob.getIsSelfDependent())
-                                                              .build();
+                dependencyResolver = new DefaultDependencyResolver(task, parentJob);
                 break;
             case CUSTOMIZE:
-                dependencyResolver = CustomizeDependencyResolver.builder()
-                                                                .childScheduleTime(task.getScheduleTime())
-                                                                .dependencyRange(task.getDependencyRange())
-                                                                .dependencyRule(task.getDependencyRule())
-                                                                .parentCronExpression(parentJob.getScheduleCron())
-                                                                .isParentSelfDepend(parentJob.isSelfDependent())
-                                                                .build();
+                dependencyResolver = new CustomizeDependencyResolver(task, parentJob);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + task.getDependencyType());
