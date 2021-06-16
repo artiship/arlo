@@ -300,7 +300,7 @@ public class SchedulerDao {
         return isFirst;
     }
 
-    public boolean isJobSelfDepend(Long jobId) {
+    public boolean isJobSelfDependent(Long jobId) {
         boolean is_self_dependent = false;
         try {
             String sql = "select is_self_dependent " +

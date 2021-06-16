@@ -17,6 +17,7 @@ public class DependencyResolverFactory {
                 break;
             case CUSTOMIZE:
                 dependencyResolver = CustomizeDependencyResolver.builder()
+                                                                .childScheduleTime(task.getScheduleTime())
                                                                 .dependencyRange(task.getDependencyRange())
                                                                 .dependencyRule(task.getDependencyRule())
                                                                 .parentCronExpression(parentJob.getScheduleCron())

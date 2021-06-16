@@ -10,6 +10,7 @@ import java.util.List;
 @Builder
 public class CustomizeDependencyResolver implements DependencyResolver {
     private final String parentCronExpression;
+    private final LocalDateTime childScheduleTime;
     private final DependencyRule dependencyRule;
     private final DependencyRange dependencyRange;
     private final boolean isParentSelfDepend;

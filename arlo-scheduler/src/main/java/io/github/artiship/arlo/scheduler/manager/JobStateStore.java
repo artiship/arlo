@@ -316,7 +316,7 @@ public class JobStateStore implements Service {
 
     private Set<TaskDependency> buildTaskDependencies(SchedulerTaskBo task) {
         Set<TaskDependency> dependencies = new HashSet<>();
-        if (schedulerDao.isJobSelfDepend(task.getJobId())) {
+        if (schedulerDao.isJobSelfDependent(task.getJobId())) {
             if (!isTaskTheFirstOfJob(task)) {
                 LocalDateTime preScheduleTime = preScheduleTime(task.getScheduleCron(), task.getScheduleTime());
                 String preCalTimeRange = calTimeRangeStr(preScheduleTime, task.getScheduleCron());
